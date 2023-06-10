@@ -19,7 +19,7 @@ export default async function(content, dir, walkers, options) {
                 if (fs.existsSync(assetPath)) {
                     processors.push(callback({
                         element: v,
-                        attribute: attr,
+                        attribute,
                         asset: assetPath,
                         dir
                     }));
