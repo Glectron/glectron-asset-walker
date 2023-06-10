@@ -1,16 +1,13 @@
 {
-  "name": "glectron-inliner",
+  "name": "glectron-asset-walker",
   "version": "1.0.0",
-  "description": "A HTML packer that inlines all used assets",
+  "description": "A HTML asset walker",
   "main": "index.js",
   "type": "module",
   "repository": "https://github.com/Glectron/glectron-inliner.git",
   "author": "YUCLing <luotianyi@luotianyi.me>",
   "license": "MIT",
   "private": false,
-  "bin": {
-    "glectron-inliner": "./cli.js"
-  },
   "dependencies": {
     "@minify-html/node": "^0.11.1",
     "css": "^3.0.0",
