@@ -21,7 +21,12 @@ export default async function(content, dir, walkers) {
                         const assetPath = path.join(dir, urlCont);
                         if (fs.existsSync(assetPath)) {
                             for (const walker of cssWalkers) {
-                                await walker[1](declaration, originalUrl, assetPath);
+                                await walker[1]({
+                                    declaration,
+                                    url: originalUrl,
+                                    asset: assetPath,
+                                    dir
+                                });
                             }
                         }
                     }

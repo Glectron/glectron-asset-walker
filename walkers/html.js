@@ -17,7 +17,12 @@ export default async function(content, dir, walkers, options) {
             if (attr && !isURL(attr)) {
                 const assetPath = path.join(dir, attr);
                 if (fs.existsSync(assetPath)) {
-                    processors.push(callback(v, attribute, assetPath));
+                    processors.push(callback({
+                        element: v,
+                        attribute: attr,
+                        asset: assetPath,
+                        dir
+                    }));
                 }
             }
         })
