@@ -1,5 +1,5 @@
 {
-  "name": "glectron-asset-walker",
+  "name": "@glectron/asset-walker",
   "version": "1.0.0",
   "description": "A HTML asset walker",
   "main": "index.js",
