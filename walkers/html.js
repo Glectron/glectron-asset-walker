@@ -32,7 +32,7 @@ export default async function(content, dir, walkers, options) {
     }
 
     await Promise.allSettled(processors);
-    if (options.minifyHtml) {
+    if (options?.minifyHtml) {
         return minifyHtml.minify(Buffer.from(el.toString()), {});
     } else {
         return el.toString();
