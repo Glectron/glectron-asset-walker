@@ -5,9 +5,8 @@ import parser from "css";
 
 import { isURL } from "../util.js";
 
-export default async function(content, dir, walkers) {
+export default async function(content, dir, walkers, options) {
     const css = parser.parse(content);
-    const cssWalkers = walkers.filter((walker) => walker[0] == "css");
 
     for (const rule of css.stylesheet.rules) {
         for (const declaration of rule.declarations) {
@@ -19,9 +18,9 @@ export default async function(content, dir, walkers) {
                     const urlCont = url[1];
                     if (!isURL(urlCont)) {
                         const assetPath = path.join(dir, urlCont);
-                        if (fs.existsSync(assetPath)) {
-                            for (const walker of cssWalkers) {
-                                await walker[1]({
+                        if (fs.existsSync(assetPath) && fs.lstatSync(assetPath).isFile()) {
+                            for (const walker of walkers) {
+                                await walker({
                                     declaration,
                                     url: originalUrl,
                                     asset: assetPath,
@@ -34,5 +33,5 @@ export default async function(content, dir, walkers) {
             }
         }
     }
-    return parser.stringify(css);
+    return parser.stringify(css, { compress: options?.minifyCss || false });
 }

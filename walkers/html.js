@@ -8,7 +8,6 @@ import { isURL } from "../util.js";
 
 export default async function(content, dir, walkers, options) {
     const el = parser.parse(content);
-    const htmlWalkers = walkers.filter((walker) => walker[0] == "html");
     const processors = [];
 
     function walkerCallback(selector, attribute, callback) {
@@ -16,7 +15,7 @@ export default async function(content, dir, walkers, options) {
             const attr = v.getAttribute(attribute);
             if (attr && !isURL(attr)) {
                 const assetPath = path.join(dir, attr);
-                if (fs.existsSync(assetPath)) {
+                if (fs.existsSync(assetPath) && fs.lstatSync(assetPath).isFile()) {
                     processors.push(callback({
                         element: v,
                         attribute,
@@ -27,13 +26,13 @@ export default async function(content, dir, walkers, options) {
             }
         })
     }
-    for (const walker of htmlWalkers) {
-        walker[1](walkerCallback);
+    for (const walker of walkers) {
+        walker(walkerCallback);
     }
 
     await Promise.allSettled(processors);
     if (options?.minifyHtml) {
-        return minifyHtml.minify(Buffer.from(el.toString()), {});
+        return minifyHtml.minify(Buffer.from(el.toString()), options?.minifyHtmlOptions || {});
     } else {
         return el.toString();
     }
